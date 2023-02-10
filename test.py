@@ -8,6 +8,7 @@ def download_audio(singerName) :
     options.add_argument("--headless")
 #path to chrome driver
     driver = webdriver.Chrome(options=options, executable_path='chromedriver.exe')
+    # driver = webdriver.Firefox(options=options)
     url='https://www.youtube.com/results?search_query=' + singerName
     driver.get(url)
     listings=driver.find_elements('xpath','//a[@id="thumbnail"]')
@@ -33,6 +34,7 @@ def download_audio(singerName) :
     yt.streams.get_audio_only().download()
 
     print('Audio downloaded')
+# download_audio('Imagine dragons')
 
 # d_video = yt.get(myfile[-1].extension,myfile[-1].resolution) 
 # try: 
