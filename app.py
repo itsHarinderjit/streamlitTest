@@ -54,6 +54,14 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.firefox import GeckoDriverManager
 import streamlit as st
+import os
+
+@st.experimental_singleton
+def installff():
+  os.system('sbase install geckodriver')
+  os.system('ln -s /home/appuser/venv/lib/python3.7/site-packages/seleniumbase/drivers/geckodriver /home/appuser/venv/bin/geckodriver')
+
+_ = installff()
 
 URL = 'http://example.com'
 TIMEOUT = 20
@@ -63,10 +71,11 @@ st.title("Test Selenium")
 firefoxOptions = Options()
 firefoxOptions.add_argument("--headless")
 service = Service(GeckoDriverManager().install())
-driver = webdriver.Firefox(
-    options=firefoxOptions,
-    service=service,
-)
+# driver = webdriver.Firefox(
+#     options=firefoxOptions,
+#     service=service,
+# )
+driver = webdriver.Firefox(options=firefoxOptions)
 driver.get(URL)
 
 st.write(driver.page_source)
