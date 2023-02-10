@@ -82,6 +82,7 @@
 
 import streamlit as st
 import os, sys
+from pytube import YouTube
 
 @st.experimental_singleton
 def installff():
@@ -95,5 +96,16 @@ opts = FirefoxOptions()
 opts.add_argument("--headless")
 browser = webdriver.Firefox(options=opts)
 
-browser.get('http://example.com')
-st.write(browser.page_source)
+browser.get('https://www.youtube.com/results?search_query=honeysingh')
+
+listings=browser.find_elements('xpath','//a[@id="thumbnail"]')
+links = []
+for l in listings:
+    links.append(l.get_attribute("href"))
+st.write('Links aquired')
+st.write(len(links))
+link = links[2]
+st.write(link)
+
+yt = YouTube(link)
+st.write('Object created')
