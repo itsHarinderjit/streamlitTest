@@ -1,4 +1,5 @@
 import os,sys
+import streamlit as st
 
 @st.experimental_singleton
 def installff():
@@ -7,7 +8,6 @@ def installff():
 
 _ = installff()
 
-import streamlit as st
 from test import download_audio
 
 st.title('test app')
