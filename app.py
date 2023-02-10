@@ -1,18 +1,46 @@
-import os,sys
 import streamlit as st
+import os, sys
+from selenium import webdriver
+from pytube import YouTube
+from selenium.webdriver import FirefoxOptions
 
 @st.experimental_singleton
 def installff():
-  os.system('sbase install chromedriver')
-  os.system('ln -s /home/appuser/venv/lib/python3.7/site-packages/seleniumbase/drivers/chromedriver /home/appuser/venv/bin/chromedriver')
+  os.system('sbase install geckodriver')
+  os.system('ln -s /home/appuser/venv/lib/python3.7/site-packages/seleniumbase/drivers/geckodriver /home/appuser/venv/bin/geckodriver')
 
 _ = installff()
 
-from test import download_audio
+def download_audio(singerName) :
+    options = FirefoxOptions()
+    options.add_argument("start-maximized")
+    options.add_argument("--headless")
+    url='https://www.youtube.com/results?search_query=' + singerName
+
+    
+    browser = webdriver.Firefox(options=options)
+
+    browser.get(url)
+
+    listings=browser.find_elements('xpath','//a[@id="thumbnail"]')
+    links = []
+    for l in listings:
+        links.append(l.get_attribute("href"))
+    st.write('Links aquired')
+    st.write(len(links))
+    link = links[2]
+
+    yt = YouTube(link)
+    st.write('Object created')
+
+    yt.streams.get_audio_only().download()
+
+    st.write('Audio downloaded')
 
 st.title('test app')
 singerName = st.text_input('Enter singer name')
 
-download_audio(singerName)
+if singerName != '' :
+    download_audio(singerName)
 
-st.header(singerName)
+    st.header(singerName)
